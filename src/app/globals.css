@@ -82,7 +82,399 @@ body {
   animation: wiggle 0.5s ease-in-out;
 }
 
+/* Skill chips: staggered pop-in (via <Reveal>) and hover lift + icon wiggle */
+@keyframes chip-in {
+  from { opacity: 0; transform: translateY(14px) scale(0.92); }
+  to { opacity: 1; transform: none; }
+}
+
+[data-reveal="pending"] .skill-chip {
+  opacity: 0;
+}
+
+[data-reveal="shown"] .skill-chip {
+  animation: chip-in 0.45s cubic-bezier(0.2, 0.8, 0.3, 1.25) backwards;
+  animation-delay: calc(var(--i, 0) * 30ms);
+}
+
+.skill-chip {
+  transition: transform 0.2s ease, border-color 0.2s ease, background-color 0.2s ease;
+}
+
+.skill-chip:hover {
+  transform: translateY(-3px);
+}
+
+.skill-chip:hover svg {
+  animation: wiggle 0.5s ease-in-out;
+}
+
+/* Project cards: image then text rise in (via <Reveal>); image lifts on hover */
+@keyframes rise-in {
+  from { opacity: 0; transform: translateY(28px); }
+  to { opacity: 1; transform: none; }
+}
+
+[data-reveal="pending"] .reveal-item {
+  opacity: 0;
+}
+
+[data-reveal="shown"] .reveal-item {
+  animation: rise-in 0.7s cubic-bezier(0.2, 0.7, 0.2, 1) backwards;
+  animation-delay: calc(var(--i, 0) * 100ms);
+}
+
+.group:hover .card-media {
+  translate: 0 -4px;
+  box-shadow: 0 18px 40px -18px color-mix(in oklab, var(--accent) 55%, transparent);
+}
+
+/* Tilted card (see Tilt.tsx): leans toward the cursor, springs back on leave */
+.tilt-wrap { perspective: 900px; }
+.tilt {
+  transform: rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
+  transition:
+    transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1),
+    translate 0.3s ease,
+    rotate 0.3s ease,
+    scale 0.3s ease,
+    box-shadow 0.3s ease;
+}
+.tilt[data-tilting] {
+  scale: 1.02;
+  transition:
+    transform 0.12s ease-out,
+    translate 0.3s ease,
+    rotate 0.3s ease,
+    scale 0.3s ease,
+    box-shadow 0.3s ease;
+}
+.tilt-shine {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background: radial-gradient(
+    circle at var(--mx, 50%) var(--my, 50%),
+    rgb(255 255 255 / 0.22),
+    transparent 55%
+  );
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+.tilt[data-tilting] .tilt-shine { opacity: 1; }
+
+/* Notebook photos drop onto the page and settle into their tilt */
+@keyframes drop-in {
+  from { opacity: 0; transform: translateY(40px) scale(0.94) rotate(-5deg); }
+  to { opacity: 1; transform: none; }
+}
+
+[data-reveal="pending"] .reveal-drop {
+  opacity: 0;
+}
+
+[data-reveal="shown"] .reveal-drop {
+  animation: drop-in 0.8s cubic-bezier(0.2, 0.8, 0.3, 1.15) backwards;
+  animation-delay: calc(var(--i, 0) * 120ms);
+}
+
+/* Buttons and links with an arrow: lift, press, and the arrow nudges its way */
+.btn-pop {
+  transition: translate 0.2s ease, scale 0.1s ease, background-color 0.2s, border-color 0.2s, color 0.2s;
+}
+.btn-pop:hover { translate: 0 -2px; }
+.btn-pop:active { scale: 0.96; }
+.btn-pop svg { transition: translate 0.2s ease; }
+.btn-pop:hover svg { translate: 2px -2px; }
+
+/* Hero photo (see HeroPhoto.tsx): hover → sticker outline + swapping doodles while
+   the cut-out of her grows out of the frame and shakes harder and harder →
+   boom (flash, ring, confetti) → back to normal. The square frame never moves. */
+@property --amp {
+  syntax: "<length>";
+  inherits: true;
+  initial-value: 0px;
+}
+@property --spin {
+  syntax: "<angle>";
+  inherits: true;
+  initial-value: 0deg;
+}
+
+.hero-photo[data-phase="charging"],
+.hero-photo[data-phase="boom"] { z-index: 10; }
+
+/* At rest the cut-out is clipped to the frame's rounded corners; while charging
+   it may grow past the top and sides (bottom stays anchored to the frame). */
+.hero-cutout-layer {
+  transform-origin: 50% 100%;
+  clip-path: inset(0 round 1.5rem);
+}
+[data-phase="charging"] .hero-cutout-layer,
+[data-phase="boom"] .hero-cutout-layer {
+  clip-path: inset(-100% -100% 0 -100%);
+}
+[data-phase="charging"] .hero-cutout-layer {
+  animation: hero-charge var(--charge, 3500ms) cubic-bezier(0.5, 0, 0.85, 0.6) forwards;
+}
+/* Grows steadily; the shake stays small, then goes violent in the last stretch */
+@keyframes hero-charge {
+  0% { scale: 1; --amp: 0px; --spin: 0deg; }
+  55% { scale: 1.22; --amp: 1px; --spin: 0.5deg; }
+  80% { scale: 1.38; --amp: 3px; --spin: 2deg; }
+  100% { scale: 1.55; --amp: 11px; --spin: 7deg; }
+}
+
+/* The source photo crops her shoulders flat at its edges; once she grows past the
+   frame those cuts would show, so fade the lower part out instead. */
+[data-phase="charging"] .hero-cutout,
+[data-phase="boom"] .hero-cutout {
+  -webkit-mask-image: linear-gradient(to bottom, #000 58%, transparent 88%);
+  mask-image: linear-gradient(to bottom, #000 58%, transparent 88%);
+}
+
+[data-phase="charging"] .hero-shake { animation: hero-shake 0.07s linear infinite; }
+@keyframes hero-shake {
+  0%, 100% { translate: 0 0; rotate: 0deg; }
+  20% { translate: var(--amp) calc(var(--amp) * -0.6); rotate: var(--spin); }
+  40% { translate: calc(var(--amp) * -1) calc(var(--amp) * 0.4); rotate: calc(var(--spin) * -1); }
+  60% { translate: calc(var(--amp) * 0.7) var(--amp); rotate: calc(var(--spin) * 0.5); }
+  80% { translate: calc(var(--amp) * -0.5) calc(var(--amp) * -1); rotate: calc(var(--spin) * -0.7); }
+}
+
+[data-phase="boom"] .hero-cutout-layer {
+  animation: hero-boom 0.7s cubic-bezier(0.3, 1.5, 0.5, 1);
+}
+@keyframes hero-boom {
+  0% { scale: 1.55; }
+  15% { scale: 1.75; }
+  100% { scale: 1; }
+}
+
+.hero-photo-frame { transition: background-color 0.25s ease; }
+[data-phase="charging"] .hero-photo-frame { background-color: #2a1f4a; }
+
+/* White cut-out "sticker" outline (the PNG background is transparent) */
+.hero-cutout { transition: filter 0.2s ease; }
+[data-phase="charging"] .hero-cutout {
+  filter:
+    drop-shadow(2px 0 0 #fff) drop-shadow(-2px 0 0 #fff)
+    drop-shadow(0 2px 0 #fff) drop-shadow(0 -2px 0 #fff);
+}
+
+.doodles {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+.doodle-caption {
+  font-family: var(--font-hand), cursive;
+  font-weight: 700;
+  transform-box: fill-box;
+  transform-origin: center;
+  paint-order: stroke;
+  stroke: #2a1f4a;
+  stroke-width: 0.6px;
+}
+
+.hero-flash {
+  position: absolute;
+  inset: 0;
+  background: #fff;
+  opacity: 0;
+  pointer-events: none;
+}
+[data-phase="boom"] .hero-flash { animation: hero-flash 0.45s ease-out; }
+@keyframes hero-flash {
+  0% { opacity: 0.95; }
+  100% { opacity: 0; }
+}
+
+.hero-boom {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+}
+.hero-ring {
+  position: absolute;
+  left: -60px;
+  top: -60px;
+  width: 120px;
+  height: 120px;
+  border-radius: 999px;
+  border: 4px solid var(--coral);
+  animation: hero-ring 0.6s ease-out forwards;
+}
+@keyframes hero-ring {
+  from { scale: 0.6; opacity: 1; }
+  to { scale: 3.2; opacity: 0; border-width: 1px; }
+}
+.hero-confetti {
+  position: absolute;
+  left: 0;
+  top: 0;
+  translate: -50% -50%;
+  animation: hero-confetti 0.85s cubic-bezier(0.15, 0.8, 0.3, 1) backwards;
+  opacity: 0;
+}
+@keyframes hero-confetti {
+  0% { transform: translate(0, 0) scale(0.3) rotate(0deg); opacity: 1; }
+  70% { opacity: 1; }
+  100% { transform: translate(var(--tx), var(--ty)) scale(1) rotate(var(--r)); opacity: 0; }
+}
+
+/* Intro loader (see IntroLoader.tsx). Only shown while <html data-intro="playing">,
+   which an inline script sets before first paint. */
+.intro {
+  display: none;
+}
+html[data-intro="playing"] { overflow: hidden; }
+html[data-intro="playing"] .intro,
+.intro.is-leaving {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2.5rem;
+  background: var(--accent);
+  color: var(--accent-ink);
+  border-radius: 0 0 2rem 2rem;
+  transition: translate 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.intro.is-leaving { translate: 0 -100%; }
+.intro-content { transition: opacity 0.4s ease, translate 0.5s cubic-bezier(0.22, 1, 0.36, 1); }
+.intro.is-leaving .intro-content { opacity: 0; translate: 0 -12px; }
+.intro img { transition: left 0.1s ease-out; }
+
+/* Hero headline: each line slides up out of a clip, then the rest rises in.
+   Held (paused on the first frame) while the intro loader is still playing. */
+.hero-line {
+  display: block;
+  overflow: hidden;
+  padding-bottom: 0.14em; /* room for descenders and the squiggle */
+  margin-bottom: -0.14em;
+}
+.hero-line > span {
+  display: block;
+  animation: line-in 0.9s cubic-bezier(0.215, 0.61, 0.355, 1) backwards;
+  animation-delay: calc(var(--l, 0) * 120ms + 150ms);
+}
+@keyframes line-in {
+  from { translate: 0 105%; opacity: 0; }
+}
+.hero-rise {
+  animation: rise-in 0.8s cubic-bezier(0.2, 0.7, 0.2, 1) backwards;
+  animation-delay: calc(var(--l, 0) * 120ms + 150ms);
+}
+html[data-intro="playing"] .hero-line > span,
+html[data-intro="playing"] .hero-rise {
+  animation-play-state: paused;
+}
+
+/* Word-by-word reveal (Words.tsx inside a <Reveal>) */
+.word { display: inline-block; }
+[data-reveal="pending"] .word { opacity: 0; }
+[data-reveal="shown"] .word {
+  animation: word-in 0.7s cubic-bezier(0.165, 0.84, 0.44, 1) backwards;
+  animation-delay: calc(var(--w, 0) * var(--word-step, 35ms));
+}
+.word-fast { --word-step: 12ms; }
+@keyframes word-in {
+  from { opacity: 0; translate: 0 0.6em; }
+}
+
+/* Footer watermark */
+.footer-watermark { font-size: clamp(5rem, 24vw, 16rem); }
+
+/* Nav: sliding pill (see NavLinks.tsx) and squish on click */
+.nav-pill {
+  transition:
+    left 0.35s cubic-bezier(0.3, 1.3, 0.5, 1),
+    width 0.35s cubic-bezier(0.3, 1.3, 0.5, 1),
+    opacity 0.2s ease;
+}
+
+.nav-link {
+  transition: color 0.2s ease, scale 0.25s cubic-bezier(0.3, 1.6, 0.5, 1);
+}
+.nav-link:active { scale: 0.9; transition-duration: 0.08s; }
+
+
+/* Logo: the dot after "Lhenna" bounces on hover */
+.logo-link:hover .logo-dot { animation: dot-bounce 0.6s ease; }
+@keyframes dot-bounce {
+  0%, 100% { translate: 0 0; }
+  30% { translate: 0 -6px; }
+  55% { translate: 0 0; }
+  75% { translate: 0 -2px; }
+}
+
+/* Résumé button: lifts, tilts and turns lavender on hover; presses on click */
+.resume-btn {
+  transition:
+    translate 0.25s cubic-bezier(0.3, 1.5, 0.5, 1),
+    rotate 0.25s cubic-bezier(0.3, 1.5, 0.5, 1),
+    scale 0.15s ease,
+    background-color 0.2s,
+    color 0.2s,
+    box-shadow 0.25s;
+}
+.resume-btn:hover {
+  translate: 0 -2px;
+  rotate: -3deg;
+  background-color: var(--accent);
+  color: var(--accent-ink);
+  box-shadow: 3px 3px 0 var(--coral);
+}
+.resume-btn:active { scale: 0.92; transition-duration: 0.08s; }
+
+/* Contact email: straight coral underline that turns into a moving wave on hover */
+.email-link {
+  background-image: linear-gradient(var(--coral), var(--coral));
+  background-repeat: no-repeat;
+  background-size: 100% 2px;
+  background-position: 0 100%;
+  padding-bottom: 0.2em;
+}
+.email-link:hover {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 8'%3E%3Cpath d='M0 5 Q 5 1 10 5 T 20 5' fill='none' stroke='%23ff8a80' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: repeat-x;
+  background-size: 0.6em 0.25em;
+  animation: wave 0.8s linear infinite;
+}
+@keyframes wave {
+  to { background-position: 0.6em 100%; }
+}
+
+/* Tags: subtle lift on hover */
+.tag {
+  transition: translate 0.2s ease, border-color 0.2s, color 0.2s;
+}
+.tag:hover { translate: 0 -2px; border-color: var(--accent); color: var(--ink); }
+
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
+  .btn-pop:hover, .btn-pop:hover svg, .tag:hover { translate: none; }
+  .nav-pill { transition: opacity 0.2s ease; }
+  .resume-btn:hover { translate: none; rotate: none; }
+  .logo-link:hover .logo-dot { animation: none; }
+  .email-link:hover { animation: none; }
+  .group:hover .card-media { translate: none; }
+  .tilt[data-tilting] { scale: none; }
+  [data-phase] .hero-cutout-layer { animation: none; }
+  .hero-line > span, .hero-rise, [data-reveal="shown"] .word { animation: none; }
+  [data-reveal="pending"] .word { opacity: 1; }
+  [data-phase] .hero-shake { animation: none; }
   .hover-wiggle:hover { animation: none; }
+  .skill-chip:hover { transform: none; }
+  .skill-chip:hover svg { animation: none; }
 }

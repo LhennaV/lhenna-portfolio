@@ -2,8 +2,13 @@ export const site = {
   name: "Lhenna-Marie Velasco",
   shortName: "Lhenna",
   role: "UI/UX Designer & Frontend Developer",
-  // Override with NEXT_PUBLIC_SITE_URL if a custom domain is connected later.
-  url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://lhennav.github.io/lhenna-portfolio",
+  // NEXT_PUBLIC_SITE_URL wins (custom domain). On Vercel, use its production URL;
+  // otherwise fall back to GitHub Pages.
+  url:
+    process.env.NEXT_PUBLIC_SITE_URL ??
+    (process.env.VERCEL_PROJECT_PRODUCTION_URL
+      ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
+      : "https://lhennav.github.io/lhenna-portfolio"),
   description:
     "Lhenna-Marie Velasco is a UI/UX designer and frontend developer who designs interfaces in Figma, then builds them with Next.js, TypeScript, and Tailwind CSS.",
   location: "Santa Maria, Bulacan, Philippines",

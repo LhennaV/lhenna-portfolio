@@ -4,6 +4,8 @@ export type ProjectImage = {
   width: number;
   height: number;
   caption?: string;
+  // Tailwind object-position class for cropped frames (default: object-top)
+  position?: string;
 };
 
 export type ProjectLink = { label: string; url: string };
@@ -191,6 +193,7 @@ export const projects: Project[] = [
       alt: "Kasafide landing page with a map of Santa Maria barangays",
       width: 1360,
       height: 689,
+      position: "object-left-top",
     },
     role: "Design & frontend development",
     team: "Capstone project, group",

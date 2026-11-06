@@ -3,8 +3,10 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import Arrow from "@/components/Arrow";
+import Reveal from "@/components/Reveal";
 import ProcessSection from "@/components/ProcessSection";
 import Tag from "@/components/Tag";
+import Tilt from "@/components/Tilt";
 import { getProject, hasCaseStudy, projects } from "@/content/projects";
 import { asset } from "@/lib/asset";
 
@@ -53,14 +55,15 @@ export default async function CaseStudy({ params }: PageProps<"/work/[slug]">) {
         All work
       </Link>
 
+      <Reveal>
       <header className="mt-8">
-        <h1 className="font-display text-4xl sm:text-6xl">{project.title}</h1>
+        <h1 className="reveal-item font-display text-4xl sm:text-6xl">{project.title}</h1>
         {project.formerName && (
           <p className="mt-2 text-sm text-muted">Formerly {project.formerName}</p>
         )}
-        <p className="mt-4 max-w-2xl text-xl text-muted">{project.tagline}</p>
+        <p style={{ "--i": 1 } as React.CSSProperties} className="reveal-item mt-4 max-w-2xl text-xl text-muted">{project.tagline}</p>
 
-        <dl className="mt-10 grid gap-6 border-y border-line py-6 sm:grid-cols-2 lg:grid-cols-4">
+        <dl style={{ "--i": 2 } as React.CSSProperties} className="reveal-item mt-10 grid gap-6 border-y border-line py-6 sm:grid-cols-2 lg:grid-cols-4">
           {meta.map((m) => (
             <div key={m.label}>
               <dt className="text-sm text-muted">{m.label}</dt>
@@ -69,7 +72,7 @@ export default async function CaseStudy({ params }: PageProps<"/work/[slug]">) {
           ))}
         </dl>
 
-        <div className="mt-6 flex flex-wrap items-center justify-between gap-4">
+        <div style={{ "--i": 3 } as React.CSSProperties} className="reveal-item mt-6 flex flex-wrap items-center justify-between gap-4">
           <div className="flex flex-wrap gap-2">
             {project.tags.map((t) => (
               <Tag key={t}>{t}</Tag>
@@ -82,7 +85,7 @@ export default async function CaseStudy({ params }: PageProps<"/work/[slug]">) {
                 href={l.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-1.5 rounded-full bg-accent px-5 py-2 text-sm font-semibold text-accent-ink transition-transform hover:-translate-y-0.5"
+                className="btn-pop inline-flex items-center gap-1.5 rounded-full bg-accent px-5 py-2 text-sm font-semibold text-accent-ink"
               >
                 {l.label}
                 <Arrow direction="up-right" />
@@ -92,16 +95,19 @@ export default async function CaseStudy({ params }: PageProps<"/work/[slug]">) {
         </div>
       </header>
 
-      <div className="relative mt-12 aspect-[16/10] overflow-hidden rounded-3xl border border-line bg-accent-soft">
-        <Image
-          src={asset(project.cover.src)}
-          alt={project.cover.alt}
-          fill
-          priority
-          sizes="(min-width: 1024px) 1024px, 100vw"
-          className="object-cover object-top"
-        />
+      <div style={{ "--i": 4 } as React.CSSProperties} className="reveal-item mt-12">
+        <Tilt max={3} className="relative aspect-[16/10] overflow-hidden rounded-3xl border border-line bg-accent-soft">
+          <Image
+            src={asset(project.cover.src)}
+            alt={project.cover.alt}
+            fill
+            priority
+            sizes="(min-width: 1024px) 1024px, 100vw"
+            className={`object-cover ${project.cover.position ?? "object-top"}`}
+          />
+        </Tilt>
       </div>
+      </Reveal>
 
       <div className="mx-auto mt-16 max-w-2xl space-y-14">
         {project.problem && (
@@ -143,9 +149,9 @@ export default async function CaseStudy({ params }: PageProps<"/work/[slug]">) {
           <div className="grid grid-cols-2 gap-6 sm:grid-cols-3">
             {phones.map((g) => (
               <figure key={g.src}>
-                <div className="overflow-hidden rounded-2xl border border-line bg-surface">
+                <Tilt className="relative overflow-hidden rounded-2xl border border-line bg-surface">
                   <Image src={asset(g.src)} alt={g.alt} width={g.width} height={g.height} sizes="(min-width: 640px) 33vw, 50vw" className="h-auto w-full" />
-                </div>
+                </Tilt>
                 {g.caption && <figcaption className="mt-2 text-center text-sm text-muted">{g.caption}</figcaption>}
               </figure>
             ))}
@@ -155,9 +161,9 @@ export default async function CaseStudy({ params }: PageProps<"/work/[slug]">) {
 
       {wides.map((g) => (
         <figure key={g.src} className="mt-12">
-          <div className="overflow-hidden rounded-3xl border border-line">
+          <Tilt max={3} className="relative overflow-hidden rounded-3xl border border-line">
             <Image src={asset(g.src)} alt={g.alt} width={g.width} height={g.height} sizes="(min-width: 1024px) 1024px, 100vw" className="h-auto w-full" />
-          </div>
+          </Tilt>
           {g.caption && <figcaption className="mt-2 text-center text-sm text-muted">{g.caption}</figcaption>}
         </figure>
       ))}

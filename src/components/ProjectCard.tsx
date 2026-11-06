@@ -2,7 +2,9 @@ import Image from "next/image";
 import Link from "next/link";
 import { hasCaseStudy, type Project } from "@/content/projects";
 import Arrow from "./Arrow";
+import Reveal from "./Reveal";
 import Tag from "./Tag";
+import Tilt from "./Tilt";
 import { asset } from "@/lib/asset";
 
 const accents = ["bg-accent-soft", "bg-coral/15", "bg-mint/15", "bg-sky/15", "bg-sun/20"];
@@ -14,11 +16,14 @@ export default function ProjectCard({ project, index, size }: Props) {
   const href = caseStudy ? `/work/${project.slug}` : project.links[0]?.url;
   const external = !caseStudy;
   const large = size === "large";
+  // Small cards sit side by side, so stagger them by column.
+  const delay = large ? 0 : index % 3;
 
   const content = (
     <>
-      <div
-        className={`relative overflow-hidden rounded-2xl ${accents[index % accents.length]} ${
+      <div style={{ "--i": delay } as React.CSSProperties} className="reveal-item">
+      <Tilt
+        className={`card-media relative overflow-hidden rounded-2xl ${accents[index % accents.length]} ${
           large ? "aspect-[16/10]" : "aspect-[4/3]"
         }`}
       >
@@ -27,11 +32,15 @@ export default function ProjectCard({ project, index, size }: Props) {
           alt={project.cover.alt}
           fill
           sizes={large ? "(min-width: 1024px) 60vw, 100vw" : "(min-width: 640px) 50vw, 100vw"}
-          className="object-cover object-top transition-transform duration-500 group-hover:scale-[1.03]"
+          className={`object-cover ${project.cover.position ?? "object-top"} transition-transform duration-500 group-hover:scale-[1.03]`}
           priority={index === 0 && large}
         />
+      </Tilt>
       </div>
-      <div className={large ? "flex flex-col justify-center gap-3" : "mt-4 flex flex-col gap-2"}>
+      <div
+        style={{ "--i": delay + 1.5 } as React.CSSProperties}
+        className={`reveal-item ${large ? "flex flex-col justify-center gap-3" : "mt-4 flex flex-col gap-2"}`}
+      >
         <div className="flex items-baseline gap-2">
           <h3 className={`font-display ${large ? "text-2xl sm:text-3xl" : "text-xl"}`}>
             {project.title}
@@ -60,9 +69,9 @@ export default function ProjectCard({ project, index, size }: Props) {
 
   const className = `group block ${large ? "grid items-center gap-6 md:grid-cols-[1.4fr_1fr] md:gap-10" : ""}`;
 
-  if (!href) return <div className={className}>{content}</div>;
-
-  return external ? (
+  const card = !href ? (
+    <div className={className}>{content}</div>
+  ) : external ? (
     <a href={href} target="_blank" rel="noopener noreferrer" className={className}>
       {content}
     </a>
@@ -71,4 +80,6 @@ export default function ProjectCard({ project, index, size }: Props) {
       {content}
     </Link>
   );
+
+  return <Reveal>{card}</Reveal>;
 }
