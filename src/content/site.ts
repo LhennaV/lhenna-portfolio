@@ -56,6 +56,7 @@ export const skills: { group: string; items: Skill[] }[] = [
       { name: "Vercel", icon: "vercel" },
       { name: "Git", icon: "git" },
       { name: "GitHub", icon: "github" },
+      { name: "Claude Code", icon: "claude" },
     ],
   },
 ];

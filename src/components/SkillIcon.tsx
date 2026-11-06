@@ -9,6 +9,7 @@ import {
 } from "react-icons/lu";
 import {
   SiAlpinedotjs,
+  SiClaude,
   SiCss,
   SiFigma,
   SiGit,
@@ -47,6 +48,7 @@ const icons: Record<string, IconType> = {
   vercel: SiVercel,
   git: SiGit,
   github: SiGithub,
+  claude: SiClaude,
 };
 
 export default function SkillIcon({ icon, className }: { icon: string; className?: string }) {
