@@ -19,32 +19,43 @@ export const site = {
   ],
 };
 
-export const skills = [
+// `icon` is a key in src/components/SkillIcon.tsx
+export type Skill = { name: string; icon: string };
+
+export const skills: { group: string; items: Skill[] }[] = [
   {
     group: "Design",
     items: [
-      "Figma",
-      "User flows",
-      "Wireframing",
-      "Interactive prototypes",
-      "Design systems",
-      "Accessible color & theming",
+      { name: "Figma", icon: "figma" },
+      { name: "User flows", icon: "flows" },
+      { name: "Wireframing", icon: "wireframe" },
+      { name: "Interactive prototypes", icon: "prototype" },
+      { name: "Design systems", icon: "components" },
+      { name: "Accessible color & theming", icon: "contrast" },
     ],
   },
   {
     group: "Frontend",
     items: [
-      "HTML & CSS",
-      "JavaScript",
-      "TypeScript",
-      "React & Next.js",
-      "Tailwind CSS",
-      "Alpine.js",
-      "Laravel Blade",
+      { name: "HTML", icon: "html" },
+      { name: "CSS", icon: "css" },
+      { name: "JavaScript", icon: "javascript" },
+      { name: "TypeScript", icon: "typescript" },
+      { name: "React", icon: "react" },
+      { name: "Next.js", icon: "nextjs" },
+      { name: "Tailwind CSS", icon: "tailwind" },
+      { name: "Alpine.js", icon: "alpine" },
+      { name: "Laravel Blade", icon: "laravel" },
     ],
   },
   {
     group: "Tools & services",
-    items: ["Supabase", "Leaflet.js", "Vercel", "Git & GitHub"],
+    items: [
+      { name: "Supabase", icon: "supabase" },
+      { name: "Leaflet.js", icon: "leaflet" },
+      { name: "Vercel", icon: "vercel" },
+      { name: "Git", icon: "git" },
+      { name: "GitHub", icon: "github" },
+    ],
   },
 ];

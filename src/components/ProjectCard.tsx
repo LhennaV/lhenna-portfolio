@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { hasCaseStudy, type Project } from "@/content/projects";
+import Arrow from "./Arrow";
 import Tag from "./Tag";
 import { asset } from "@/lib/asset";
 
@@ -46,11 +47,12 @@ export default function ProjectCard({ project, index, size }: Props) {
             <Tag key={t}>{t}</Tag>
           ))}
         </div>
-        <span className="mt-1 text-sm font-semibold text-accent">
-          {caseStudy ? "Read case study" : "View in Figma"}{" "}
-          <span aria-hidden className="inline-block transition-transform group-hover:translate-x-1">
-            {external ? "↗" : "→"}
-          </span>
+        <span className="mt-1 inline-flex items-center gap-1.5 text-sm font-semibold text-accent">
+          {caseStudy ? "Read case study" : "View in Figma"}
+          <Arrow
+            direction={external ? "up-right" : "right"}
+            className="transition-transform group-hover:translate-x-1"
+          />
         </span>
       </div>
     </>

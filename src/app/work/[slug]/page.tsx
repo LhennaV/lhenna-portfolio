@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import Arrow from "@/components/Arrow";
 import ProcessSection from "@/components/ProcessSection";
 import Tag from "@/components/Tag";
 import { getProject, hasCaseStudy, projects } from "@/content/projects";
@@ -44,8 +45,12 @@ export default async function CaseStudy({ params }: PageProps<"/work/[slug]">) {
 
   return (
     <article className="mx-auto max-w-5xl px-4 pb-24 pt-12 sm:px-6">
-      <Link href="/#work" className="text-sm text-muted transition-colors hover:text-accent">
-        ← All work
+      <Link
+        href="/#work"
+        className="inline-flex items-center gap-1.5 text-sm text-muted transition-colors hover:text-accent"
+      >
+        <Arrow direction="left" />
+        All work
       </Link>
 
       <header className="mt-8">
@@ -77,9 +82,10 @@ export default async function CaseStudy({ params }: PageProps<"/work/[slug]">) {
                 href={l.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="rounded-full bg-accent px-5 py-2 text-sm font-semibold text-accent-ink transition-transform hover:-translate-y-0.5"
+                className="inline-flex items-center gap-1.5 rounded-full bg-accent px-5 py-2 text-sm font-semibold text-accent-ink transition-transform hover:-translate-y-0.5"
               >
-                {l.label} ↗
+                {l.label}
+                <Arrow direction="up-right" />
               </a>
             ))}
           </div>
@@ -162,9 +168,9 @@ export default async function CaseStudy({ params }: PageProps<"/work/[slug]">) {
           className="group mt-24 block rounded-3xl border border-line bg-surface p-8 transition-colors hover:border-accent"
         >
           <p className="text-sm text-muted">Next project</p>
-          <p className="mt-2 font-display text-3xl">
-            {next.title}{" "}
-            <span aria-hidden className="inline-block transition-transform group-hover:translate-x-2">→</span>
+          <p className="mt-2 flex items-center gap-3 font-display text-3xl">
+            {next.title}
+            <Arrow direction="right" className="transition-transform group-hover:translate-x-2" />
           </p>
           <p className="mt-2 text-muted">{next.tagline}</p>
         </Link>

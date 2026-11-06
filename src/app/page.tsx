@@ -1,5 +1,7 @@
 import Image from "next/image";
+import Arrow from "@/components/Arrow";
 import ProjectCard from "@/components/ProjectCard";
+import SkillIcon from "@/components/SkillIcon";
 import { projects } from "@/content/projects";
 import { site, skills } from "@/content/site";
 import { asset } from "@/lib/asset";
@@ -73,16 +75,20 @@ export default function Home() {
               </p>
             </div>
 
-            <dl className="mt-10 grid gap-8 sm:grid-cols-3">
+            <dl className="mt-10 space-y-8">
               {skills.map((s) => (
                 <div key={s.group}>
-                  <dt className="mb-3 font-display text-lg text-accent">
-                    {s.group}
-                  </dt>
+                  <dt className="mb-3 font-display text-lg text-accent">{s.group}</dt>
                   <dd>
-                    <ul className="space-y-1.5 text-sm">
+                    <ul className="flex flex-wrap gap-2">
                       {s.items.map((item) => (
-                        <li key={item}>{item}</li>
+                        <li
+                          key={item.name}
+                          className="flex items-center gap-2 rounded-xl border border-line bg-bg px-3 py-2 text-sm transition-colors hover:border-accent"
+                        >
+                          <SkillIcon icon={item.icon} className="h-4 w-4 shrink-0 text-accent" />
+                          {item.name}
+                        </li>
                       ))}
                     </ul>
                   </dd>
@@ -95,7 +101,7 @@ export default function Home() {
 
       {/* Work */}
       <section id="work" className="scroll-mt-20 border-t border-line">
-        <div className="mx-auto max-w-5xl px-4 py-20 sm:px-6">
+        <div className="mx-auto max-w-5xl px-4 pb-16 pt-20 sm:px-6 sm:pb-20">
           <SectionHeading title="Things I've designed and built" />
           <div className="mt-12 flex flex-col gap-20">
             {featured.map((p, i) => (
@@ -114,9 +120,9 @@ export default function Home() {
 
       {/* Contact */}
       <section id="contact" className="scroll-mt-20 border-t border-line">
-        <div className="mx-auto max-w-5xl px-4 py-24 text-center sm:px-6">
+        <div className="mx-auto max-w-5xl px-4 py-16 text-center sm:px-6 sm:py-24">
           <SectionHeading title="Work with me" centered />
-          <p className="mx-auto mt-4 max-w-xl text-lg text-muted">
+          <p className="mx-auto mt-4 max-w-xl text-balance text-lg text-muted">
             I design it, I build it, and then I nap. That&apos;s usually when the best ideas
             show up. It&apos;s a whole process.
           </p>
@@ -125,20 +131,21 @@ export default function Home() {
           </p>
           <a
             href={`mailto:${site.email}`}
-            className="mt-8 inline-block font-display text-2xl text-accent underline decoration-coral decoration-2 underline-offset-8 transition-colors hover:text-ink sm:text-3xl"
+            className="mt-8 inline-block break-all font-display text-xl text-accent underline decoration-coral decoration-2 underline-offset-8 transition-colors hover:text-ink sm:text-3xl"
           >
             {site.email}
           </a>
-          <div className="mt-10 flex flex-wrap justify-center gap-3">
+          <div className="mt-8 flex flex-wrap justify-center gap-2 sm:mt-10 sm:gap-3">
             {[...site.socials, { label: "Résumé", url: site.resumeUrl }].map((l) => (
               <a
                 key={l.label}
                 href={l.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="rounded-full border border-line bg-surface px-5 py-2 text-sm font-medium transition-colors hover:border-accent hover:text-accent"
+                className="inline-flex items-center gap-1.5 rounded-full border border-line bg-surface px-4 py-2 text-sm font-medium transition-colors hover:border-accent hover:text-accent sm:px-5"
               >
-                {l.label} ↗
+                {l.label}
+                <Arrow direction="up-right" />
               </a>
             ))}
           </div>
