@@ -1,0 +1,88 @@
+@import "tailwindcss";
+
+:root {
+  --bg: #fbfaff;
+  --surface: #ffffff;
+  --ink: #1d1a2b;
+  --muted: #625e78;
+  --line: #e6e1f4;
+  --accent: #7c4dec;
+  --accent-ink: #ffffff;
+  --accent-soft: #efe9ff;
+  --coral: #ff8a80;
+  --sun: #ffd166;
+  --mint: #5ed6b8;
+  --sky: #7cc4ff;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #121019;
+    --surface: #1a1724;
+    --ink: #f2effa;
+    --muted: #a7a2bb;
+    --line: #2c2740;
+    --accent: #b49bff;
+    --accent-ink: #160f2b;
+    --accent-soft: #241d3a;
+  }
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-ink: var(--ink);
+  --color-muted: var(--muted);
+  --color-line: var(--line);
+  --color-accent: var(--accent);
+  --color-accent-ink: var(--accent-ink);
+  --color-accent-soft: var(--accent-soft);
+  --color-coral: var(--coral);
+  --color-sun: var(--sun);
+  --color-mint: var(--mint);
+  --color-sky: var(--sky);
+  --font-sans: var(--font-body);
+  --font-display: var(--font-display);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+}
+
+::selection {
+  background: var(--accent);
+  color: var(--accent-ink);
+}
+
+.pixelated {
+  image-rendering: pixelated;
+}
+
+/* Hand-drawn style underline under a highlighted word */
+.squiggle {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 8' preserveAspectRatio='none'%3E%3Cpath d='M1 5 Q 15 1 30 5 T 60 5 T 90 5 T 119 5' fill='none' stroke='%23ff8a80' stroke-width='2.5' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-size: 100% 0.35em;
+  background-position: 0 100%;
+  padding-bottom: 0.1em;
+}
+
+@keyframes wiggle {
+  0%, 100% { transform: rotate(0deg); }
+  25% { transform: rotate(-6deg); }
+  75% { transform: rotate(6deg); }
+}
+
+.hover-wiggle:hover {
+  animation: wiggle 0.5s ease-in-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .hover-wiggle:hover { animation: none; }
+}
