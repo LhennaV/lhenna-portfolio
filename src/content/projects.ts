@@ -23,6 +23,10 @@ export type Project = {
   tags: string[];
   problem?: string;
   sections?: { title: string; points: string[] }[];
+  process?: {
+    intro: string;
+    steps: { title: string; body: string; quote?: string; images?: ProjectImage[] }[];
+  };
   stack?: string;
   gallery?: ProjectImage[];
   links: ProjectLink[];
@@ -51,7 +55,7 @@ export const projects: Project[] = [
       height: 900,
     },
     role: "Product design & frontend",
-    team: "2-person team, with Tristan Reboredo on backend",
+    team: "Personal project (2-person team)",
     timeline: "Oct 2026 – present",
     status: "In development · prototype complete",
     tags: ["UI/UX", "Figma", "Mobile-first", "Next.js", "TypeScript", "Supabase"],
@@ -83,6 +87,75 @@ export const projects: Project[] = [
         ],
       },
     ],
+    process: {
+      intro:
+        "Trybe started in my notebook long before it reached Figma. These are the actual pages.",
+      steps: [
+        {
+          title: "Naming it",
+          body: "My first names were literal: Hobby Trader, Tools Trader, Hobby Trade. Accurate, but forgettable. Trybe stuck because it's two words in one: try, because the app is about trying new hobbies, and tribe, for the community around them.",
+          images: [
+            {
+              src: "/images/projects/trybe/process/naming.jpg",
+              alt: "Notebook page listing app name ideas, with Trybe circled and annotated as try plus tribe",
+              caption: "Name ideas, with Trybe circled",
+              width: 900,
+              height: 1200,
+            },
+          ],
+        },
+        {
+          title: "Scroll or swipe?",
+          quote: "Imagine squishy trade but with hobby tools.",
+          body: "I wanted it to feel like social media or a dating app, and went back and forth on scrolling versus swiping. I chose scrolling, like Instagram, so people can discover their next hobby by browsing what others have made.",
+        },
+        {
+          title: "Finding the tagline",
+          body: "I started from the saying “curiosity killed the cat, but satisfaction brought it back” and mapped it onto the problem: curiosity is what gets people to try new hobbies, and it “kills” them financially and in storage space when the hobby doesn't stick. Trybe is what brings it back. One draft was “Curiosity looks good on you (???)”. The final: “Curiosity killed the cat. Trybe brought it back.”",
+          images: [
+            {
+              src: "/images/projects/trybe/process/tagline.jpg",
+              alt: "Notebook page mapping the phrase curiosity killed the cat onto Trybe's purpose",
+              caption: "Turning the saying into a metaphor",
+              width: 900,
+              height: 1200,
+            },
+          ],
+        },
+        {
+          title: "The logo",
+          body: "A cat peeking out of a box. The cat is the curiosity, and the box is the hobby tools forgotten in storage. My cat, Stormi, was the reference, which is why the final cat is a tortoiseshell.",
+          images: [
+            {
+              src: "/images/projects/trybe/process/logo-notes.jpg",
+              alt: "Notebook page with the logo idea, a cat peeking out of a box, and rough sketches including one of Stormi",
+              caption: "First logo notes and rough sketches",
+              width: 900,
+              height: 1200,
+            },
+            {
+              src: "/images/projects/trybe/process/logo-sketch.jpg",
+              alt: "Pencil sketch of a cat peeking out of a cardboard box marked with a T and a paw print",
+              caption: "The sketch that went into Figma…",
+              width: 760,
+              height: 600,
+            },
+            {
+              src: "/images/projects/trybe/process/logo-final.png",
+              alt: "Final Trybe logo: a tortoiseshell cat peeking out of a cardboard box above the TRYBE wordmark and tagline",
+              caption: "…and the final logo",
+              width: 510,
+              height: 478,
+            },
+          ],
+        },
+        {
+          title: "Rules I set early, and what I cut",
+          quote: "Trybe should be fun in designs. Don't stick to one color, use dopamine colors.",
+          body: "That note is why Trybe pairs lavender with coral, yellow, mint, and sky blue instead of a single brand color. Renting tools made it into my first proposal, but not into the first version, which focuses on trading.",
+        },
+      ],
+    },
     stack:
       "Next.js, TypeScript, and Tailwind CSS on the frontend; Supabase for auth, database, storage, and realtime chat; deployed on Vercel as an installable PWA.",
     gallery: [
@@ -196,6 +269,52 @@ export const projects: Project[] = [
         label: "Figma",
         url: "https://www.figma.com/design/csy0D8GyqELHmkDRXk7Hzu/GTrack?node-id=0-1&p=f&t=uMm2HpgYmXsKXbHC-0",
       },
+    ],
+  },
+  {
+    slug: "personal-portfolio",
+    title: "Personal Portfolio",
+    featured: false,
+    tagline: "An interactive pixel-art portfolio with a customizable character and a cat.",
+    summary:
+      "My personal site: a cozy pixel-art world where visitors customize my character, play with my cat Stormi, and leave a note in the guestbook.",
+    cover: {
+      src: "/images/projects/personal-portfolio/home.png",
+      alt: "Pixel-art personal portfolio with a character customizer and a pixel cat",
+      width: 1440,
+      height: 900,
+    },
+    role: "Design & development",
+    team: "Personal project",
+    status: "Live",
+    tags: ["Pixel art", "JavaScript", "Tailwind CSS", "Supabase"],
+    problem:
+      "I wanted a personal site that felt like me instead of a template: playful, cozy, and a little bit of a game.",
+    sections: [
+      {
+        title: "What I built",
+        points: [
+          "A layered pixel-art version of me that visitors can customize (hair, outfit, expression, and accessories), with animated scenes.",
+          "An interactive Stormi: drag her into her box or onto the character, or drop stickers on her.",
+          "Draggable desktop stickers, each with its own sound effect.",
+          "A guestbook backed by Supabase.",
+          "An admin page for editing projects, images, and guestbook entries, with database rules that only let my account save changes.",
+        ],
+      },
+      {
+        title: "Behind the scenes",
+        points: [
+          "Sprites generated with Python scripts, so every layer lines up on the same 32×56 canvas with no manual positioning.",
+          "Sound effects synthesized in code as WAV files with a small Node script.",
+          "A scheduled GitHub Action that keeps the free Supabase database from pausing.",
+        ],
+      },
+    ],
+    stack:
+      "HTML, Tailwind CSS, and vanilla JavaScript, with Supabase for the guestbook, project data, and admin sign-in. Hosted on GitHub Pages.",
+    links: [
+      { label: "Visit the site", url: "https://lhennav.github.io/Portfolio/" },
+      { label: "GitHub", url: "https://github.com/LhennaV/Portfolio" },
     ],
   },
   {

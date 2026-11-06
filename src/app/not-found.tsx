@@ -12,7 +12,7 @@ export default function NotFound() {
         height={90}
         className="pixelated"
       />
-      <h1 className="mt-6 font-display text-4xl font-bold">Page not found</h1>
+      <h1 className="mt-6 font-display text-4xl">Page not found</h1>
       <p className="mt-3 text-muted">Stormi looked everywhere. This page isn&apos;t here.</p>
       <Link
         href="/"

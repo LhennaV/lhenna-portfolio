@@ -11,7 +11,7 @@ export default function SiteHeader() {
   return (
     <header className="sticky top-0 z-40 border-b border-line/70 bg-bg/80 backdrop-blur">
       <div className="mx-auto flex h-16 max-w-5xl items-center justify-between px-4 sm:px-6">
-        <Link href="/" className="font-display text-lg font-bold tracking-tight">
+        <Link href="/" className="font-display text-lg">
           {site.shortName}
           <span className="text-accent">.</span>
         </Link>

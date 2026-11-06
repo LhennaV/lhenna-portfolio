@@ -9,7 +9,7 @@ export const site = {
   location: "Santa Maria, Bulacan, Philippines",
   email: "vlhennamarie@gmail.com",
   resumeUrl:
-    "https://drive.google.com/file/d/1_Xfmtsy8TfvCJFzy_U8l8ro_dWQGYg_5/view?usp=sharing",
+    "https://drive.google.com/file/d/1rUNEUg5-PMZG77rSxgEIc8C7JBwF1mIT/view?usp=sharing",
   socials: [
     {
       label: "LinkedIn",

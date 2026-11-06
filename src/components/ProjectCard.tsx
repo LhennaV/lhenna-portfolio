@@ -32,7 +32,7 @@ export default function ProjectCard({ project, index, size }: Props) {
       </div>
       <div className={large ? "flex flex-col justify-center gap-3" : "mt-4 flex flex-col gap-2"}>
         <div className="flex items-baseline gap-2">
-          <h3 className={`font-display font-bold tracking-tight ${large ? "text-2xl sm:text-3xl" : "text-xl"}`}>
+          <h3 className={`font-display ${large ? "text-2xl sm:text-3xl" : "text-xl"}`}>
             {project.title}
           </h3>
           {project.formerName && (

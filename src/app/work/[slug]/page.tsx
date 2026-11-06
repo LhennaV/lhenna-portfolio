@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import ProcessSection from "@/components/ProcessSection";
 import Tag from "@/components/Tag";
 import { getProject, hasCaseStudy, projects } from "@/content/projects";
 import { asset } from "@/lib/asset";
@@ -48,7 +49,7 @@ export default async function CaseStudy({ params }: PageProps<"/work/[slug]">) {
       </Link>
 
       <header className="mt-8">
-        <h1 className="font-display text-4xl font-bold tracking-tight sm:text-6xl">{project.title}</h1>
+        <h1 className="font-display text-4xl sm:text-6xl">{project.title}</h1>
         {project.formerName && (
           <p className="mt-2 text-sm text-muted">Formerly {project.formerName}</p>
         )}
@@ -57,7 +58,7 @@ export default async function CaseStudy({ params }: PageProps<"/work/[slug]">) {
         <dl className="mt-10 grid gap-6 border-y border-line py-6 sm:grid-cols-2 lg:grid-cols-4">
           {meta.map((m) => (
             <div key={m.label}>
-              <dt className="text-xs font-semibold uppercase tracking-wider text-accent">{m.label}</dt>
+              <dt className="text-sm text-muted">{m.label}</dt>
               <dd className="mt-1 text-sm">{m.value}</dd>
             </div>
           ))}
@@ -99,14 +100,18 @@ export default async function CaseStudy({ params }: PageProps<"/work/[slug]">) {
       <div className="mx-auto mt-16 max-w-2xl space-y-14">
         {project.problem && (
           <section>
-            <h2 className="font-display text-2xl font-bold">The problem</h2>
+            <h2 className="font-display text-2xl">The problem</h2>
             <p className="mt-4 text-lg leading-relaxed text-muted">{project.problem}</p>
           </section>
         )}
+      </div>
 
+      {project.process && <ProcessSection process={project.process} />}
+
+      <div className="mx-auto mt-14 max-w-2xl space-y-14">
         {project.sections?.map((s) => (
           <section key={s.title}>
-            <h2 className="font-display text-2xl font-bold">{s.title}</h2>
+            <h2 className="font-display text-2xl">{s.title}</h2>
             <ul className="mt-4 space-y-3">
               {s.points.map((pt) => (
                 <li key={pt} className="flex gap-3 text-lg leading-relaxed text-muted">
@@ -120,7 +125,7 @@ export default async function CaseStudy({ params }: PageProps<"/work/[slug]">) {
 
         {project.stack && (
           <section>
-            <h2 className="font-display text-2xl font-bold">Stack</h2>
+            <h2 className="font-display text-2xl">Stack</h2>
             <p className="mt-4 text-lg leading-relaxed text-muted">{project.stack}</p>
           </section>
         )}
@@ -156,8 +161,8 @@ export default async function CaseStudy({ params }: PageProps<"/work/[slug]">) {
           href={`/work/${next.slug}`}
           className="group mt-24 block rounded-3xl border border-line bg-surface p-8 transition-colors hover:border-accent"
         >
-          <p className="text-sm font-semibold uppercase tracking-wider text-accent">Next project</p>
-          <p className="mt-2 font-display text-3xl font-bold">
+          <p className="text-sm text-muted">Next project</p>
+          <p className="mt-2 font-display text-3xl">
             {next.title}{" "}
             <span aria-hidden className="inline-block transition-transform group-hover:translate-x-2">→</span>
           </p>
